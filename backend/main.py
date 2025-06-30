@@ -1,1 +1,3 @@
-print("hi :)")
+from fastapi import FastAPI
+
+
