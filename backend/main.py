@@ -3,7 +3,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import models
 from database import Base, engine
-
+import user
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -19,3 +19,5 @@ while True:
     except Exception as error:
         print("Connection failed but dont worry it is an exception you can solve it ")
         print("error: ", error)
+
+app.include_router(user.router)

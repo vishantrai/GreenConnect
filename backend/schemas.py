@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, validator, model_validator
 from datetime import datetime
 from typing import Optional
 import re #re lets you search, match, extract, and manipulate text
@@ -11,6 +11,7 @@ class UserCreate(BaseModel):
     email: EmailStr #Emailstr will verify email as it is real or not
     #for defining password we are going to learn some new concept, here we want a password with combination of letters and numbers and min character should be 8
     password: str = Field(..., min_length=8)
+    confirm_password: str
     @validator("password") #Hey! Before you accept a value for the password field, run this function first
     def validate_password(cls, v): #cls refers to the Pydantic model class itself and v is the value of password which needs validation 
         if not re.match("^[A-Za-z0-9]+$", v): #^ indicates the start of string
@@ -20,7 +21,17 @@ class UserCreate(BaseModel):
         if not re.search("[0-9]", v):
             raise ValueError("Password must contain at least one number")
         return v #If all checks pass, the value is returned (aka accepted and used in the model)
-    created_at: datetime
+    # created_at: datetime
+
+    @model_validator(mode="after") #root validator validates that the password == confirm password as the user have to give both on the frontend
+    def passwords_match(cls, values):
+        pw = values.get('password')
+        cpw = values.get('confirm_password')
+        if pw != cpw:
+            raise ValueError("Password and Confirm Password do not match ")
+        return values
+    class Config:
+        orm_mode = True
     
 class Address(BaseModel):
     address_line: str
