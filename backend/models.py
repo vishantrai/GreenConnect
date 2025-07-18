@@ -29,18 +29,19 @@ class Address(Base):
     latitude = Column(DECIMAL(9,6), nullable=False)
     longitude = Column(DECIMAL(9,6), nullable=False)
 
-class roles(Base):
+class Role(Base):
     __tablename__="roles"
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     volunteer = Column(Boolean, nullable=False, default=True, server_default=text('true'))
-    planter = Column(Boolean, default=False)
-    care_taker = Column(Boolean, default=False)
-    donor= Column(Boolean, default=False) #mention on frontend as this is plant donor, equipment donor, labour donor because we dont allow direct money donation
-    land_provider= Column(Boolean, default=False)
+    planter = Column(Boolean, nullable=False, default=False)
+    care_taker = Column(Boolean,nullable=False,  default=False)
+    donor= Column(Boolean, nullable=False, default=False) #mention on frontend as this is plant donor, equipment donor, labour donor because we dont allow direct money donation
+    land_provider= Column(Boolean, nullable=False, default=False) 
+
 
 
 
 #notes
-#we cannot define more than one table in one class of the sqlalchemy 
+#we cannot define more than one table in one class of the sqlalchemy so for each table create different class

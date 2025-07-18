@@ -21,3 +21,36 @@ class UserCreate(BaseModel):
             raise ValueError("Password must contain at least one number")
         return v #If all checks pass, the value is returned (aka accepted and used in the model)
     created_at: datetime
+    
+class Address(BaseModel):
+    address_line: str
+    locality: Optional[str] #it is not cumpulsory to enter the locality
+    city: str
+    state: str
+    country: str = "BHARAT"
+    pincode: str
+    @validator("pincode")
+    def validate_pincode(cls, v):
+        if not re.fullmatch(r"\d{6}", v):
+            raise ValueError("Pincode must be exactly 6 digits")
+        return v
+    latitude: float
+    longitude: float 
+
+class Role(BaseModel):
+    volunteer: bool = True
+    planter: bool = False
+    care_taker: bool = False
+    donor: bool = False
+    land_provider : bool = False
+#this is not completed there is a few more thing to do so before moving forward just learn about because these things i dont understand when i was learning fastapi from tutorial
+# class RoleCreate(RoleBase):
+#     user_id: int  # during creation you'll link with user
+
+# class RoleOut(RoleBase):
+#     id: int
+#     user_id: int
+
+#     class Config:
+#         orm_mode = True
+ 
