@@ -17,9 +17,9 @@ def create_user(user: schemas.UserCreate, db: Session = Depends (get_db) ):
     #hasing the password
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
-    new_user = models.User(**user.dict()) #** this is for dictionary unpacking 
+    new_user = models.User(**user.dict(exclude={"confirm_password"})) #** this is for dictionary unpacking 
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
-    return (f"here are some details {new_user}")
+    return new_user

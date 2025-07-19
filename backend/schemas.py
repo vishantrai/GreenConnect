@@ -24,14 +24,13 @@ class UserCreate(BaseModel):
     # created_at: datetime
 
     @model_validator(mode="after") #root validator validates that the password == confirm password as the user have to give both on the frontend
-    def passwords_match(cls, values):
-        pw = values.get('password')
-        cpw = values.get('confirm_password')
-        if pw != cpw:
+    def passwords_match(self):
+        if self.password != self.confirm_password:
             raise ValueError("Password and Confirm Password do not match ")
-        return values
-    class Config:
-        orm_mode = True
+        return self 
+    model_config = {
+        "from_attributes": True
+    }
     
 class Address(BaseModel):
     address_line: str
@@ -65,3 +64,11 @@ class Role(BaseModel):
 #     class Config:
 #         orm_mode = True
  
+class UserOut(BaseModel):
+    id: int
+    name: str
+    created_at: datetime
+
+    model_config = {
+        "from_attributes": True
+    }
