@@ -11,7 +11,7 @@ router = APIRouter(
 
 User = schemas.UserCreate
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model= schemas.UserCreate)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model= schemas.UserOut)
 def create_user(user: schemas.UserCreate, db: Session = Depends (get_db) ):
 
     #hasing the password
@@ -23,3 +23,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends (get_db) ):
     db.refresh(new_user)
 
     return new_user
+
+@router.post("/address", status_code=status.HTTP_201_CREATED) #,response_model= schemas.AddressOut)
+def address(address: schemas.Address, db: Session = Depends(get_db)):
+    new_address = models.Address(**address.dict())
+    db.add(new_address)
+    db.commit()
+    db.refresh(new_address)
+
+    return ("Address saved")

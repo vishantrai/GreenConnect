@@ -1,5 +1,5 @@
 # this is sqlalchemy models
-from sqlalchemy import Column, Integer, DECIMAL, Boolean, String, ForeignKey
+from sqlalchemy import Column, Integer, DECIMAL, Boolean, String, ForeignKey, NUMERIC
 from sqlalchemy.sql.expression import null, text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 import psycopg2
@@ -26,8 +26,8 @@ class Address(Base):
     state = Column(String, nullable=False)
     country = Column(String, default="BHARAT")
     pincode = Column(String, nullable=False)
-    latitude = Column(DECIMAL(9,6), nullable=False)
-    longitude = Column(DECIMAL(9,6), nullable=False)
+    latitude = Column(NUMERIC(12,6), nullable=False)
+    longitude = Column(NUMERIC(12,6), nullable=False)
 
 class Role(Base):
     __tablename__="roles"

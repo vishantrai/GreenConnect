@@ -32,7 +32,18 @@ class UserCreate(BaseModel):
         "from_attributes": True
     }
     
+class UserOut(BaseModel):
+    id: int
+    name: str
+    created_at: datetime
+
+    model_config = {
+        "from_attributes": True
+    }
+
+
 class Address(BaseModel):
+    user_id: int
     address_line: str
     locality: Optional[str] #it is not cumpulsory to enter the locality
     city: str
@@ -45,30 +56,31 @@ class Address(BaseModel):
             raise ValueError("Pincode must be exactly 6 digits")
         return v
     latitude: float
-    longitude: float 
+    longitude: float
+
+class AddressOut(BaseModel):
+    id:int
+    # name: str
+    address_line: str
+
+    model_config = {
+        "from_attributes": True
+    }
 
 class Role(BaseModel):
+    user_id: int
     volunteer: bool = True
     planter: bool = False
     care_taker: bool = False
     donor: bool = False
     land_provider : bool = False
 #this is not completed there is a few more thing to do so before moving forward just learn about because these things i dont understand when i was learning fastapi from tutorial
-# class RoleCreate(RoleBase):
-#     user_id: int  # during creation you'll link with user
 
-# class RoleOut(RoleBase):
-#     id: int
-#     user_id: int
-
-#     class Config:
-#         orm_mode = True
- 
-class UserOut(BaseModel):
+class RoleOut(BaseModel):
     id: int
-    name: str
-    created_at: datetime
+    user_id: int
 
-    model_config = {
-        "from_attributes": True
-    }
+    class Config:
+        orm_mode = True
+ 
+
