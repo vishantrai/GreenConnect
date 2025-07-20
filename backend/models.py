@@ -1,5 +1,5 @@
 # this is sqlalchemy models
-from sqlalchemy import Column, Integer, DECIMAL, Boolean, String, ForeignKey, NUMERIC
+from sqlalchemy import Column, Integer, Float, Boolean, String, ForeignKey, NUMERIC
 from sqlalchemy.sql.expression import null, text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 import psycopg2
@@ -44,13 +44,14 @@ class LandDonationPost(Base):
     __tablename__ = "land_donation_post"
 
     id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False ) 
     donor_type = Column(String, nullable=False )
     mobile_number = Column(String, nullable=False) #mobile should not be unique because one number can be used for multiple posts
     email= Column(String, nullable=True)
     address = Column(String, nullable=False)
-    latitude = Column(float, nullable= False)
-    longitude = Column(float, nullable= False)
-    area = Column(float, nullable=False)
+    latitude = Column(Float, nullable= False)
+    longitude = Column(Float, nullable= False)
+    area = Column(Float, nullable=False)
     area_unit = Column(String, nullable=False)
     soil_type = Column(String, nullable=False)
     tree_type1 = Column(String, nullable=False)

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends
 import schemas, utils, models
 from sqlalchemy.orm import Session
 from database import get_db
@@ -22,7 +22,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends (get_db) ):
     db.commit()
     db.refresh(new_user)
 
-    return (f"Remember your id {new_user} ")
+    return new_user
 
 @router.post("/address", status_code=status.HTTP_201_CREATED) #,response_model= schemas.AddressOut)
 def address(address: schemas.Address, db: Session = Depends(get_db)):
