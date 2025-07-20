@@ -45,7 +45,7 @@ class UserOut(BaseModel):
 class Address(BaseModel):
     user_id: int
     address_line: str
-    locality: Optional[str] #it is not cumpulsory to enter the locality
+    locality: Optional[str] = None #it is not cumpulsory to enter the locality
     city: str
     state: str
     country: str = "BHARAT"
@@ -58,9 +58,12 @@ class Address(BaseModel):
     latitude: float
     longitude: float
 
+class AddressUpdate(Address):
+    pass
+
 class AddressOut(BaseModel):
     id:int
-    # name: str
+    name: str
     address_line: str
 
     model_config = {
@@ -74,13 +77,19 @@ class Role(BaseModel):
     care_taker: bool = False
     donor: bool = False
     land_provider : bool = False
-#this is not completed there is a few more thing to do so before moving forward just learn about because these things i dont understand when i was learning fastapi from tutorial
+
 
 class RoleOut(BaseModel):
     id: int
     user_id: int
 
-    class Config:
-        orm_mode = True
- 
+    model_config = {
+        "from_attributes": True
+    }
+# incomplete - to complete this i need to revise auth
 
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+# Creating 
