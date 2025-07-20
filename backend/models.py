@@ -40,6 +40,31 @@ class Role(Base):
     donor= Column(Boolean, nullable=False, default=False) #mention on frontend as this is plant donor, equipment donor, labour donor because we dont allow direct money donation
     land_provider= Column(Boolean, nullable=False, default=False) 
 
+class LandDonationPost(Base):
+    __tablename__ = "land_donation_post"
+
+    id = Column(Integer, primary_key=True)
+    donor_type = Column(String, nullable=False )
+    mobile_number = Column(String, nullable=False) #mobile should not be unique because one number can be used for multiple posts
+    email= Column(String, nullable=True)
+    address = Column(String, nullable=False)
+    latitude = Column(float, nullable= False)
+    longitude = Column(float, nullable= False)
+    area = Column(float, nullable=False)
+    area_unit = Column(String, nullable=False)
+    soil_type = Column(String, nullable=False)
+    tree_type1 = Column(String, nullable=False)
+    tree_type2 = Column(String, nullable=False)
+    tree_type3 = Column(Boolean, nullable=False)
+    ownership_type = Column(String, nullable=False)
+    publicly_accessible = Column(Boolean, nullable=False)
+    road_access = Column(Boolean, nullable=False)
+    fencing = Column(Boolean, nullable=False)
+    water_source = Column(Boolean, nullable=False)
+    image_url = Column(String, nullable=False)
+    special_note = Column(String, nullable=False)
+
+
 
 
 

@@ -92,4 +92,34 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-# Creating 
+# Creating schemas for the posts
+class CreatePost(BaseModel):
+    name: str #(in future it will be replaced by a option where it features name same as username for now it is manual)
+    donor_type: str
+    mobile_number: str
+    email: Optional[EmailStr] = None
+
+class LandDonor(CreatePost):
+    address: str
+    latitude: float
+    longitude: float
+    area: float
+    area_unit: str
+    soil_type: str
+    tree_type1: str
+    tree_type2: str
+    tree_type3: bool #js will convert yes/no to true/false
+    ownership_type: str
+    publicly_accessible: bool
+    road_access: bool
+    fencing: bool
+    water_source: bool
+    image_url: str
+    special_note: str
+
+class LandDonorOut(CreatePost):
+    pass
+
+    model_config = {
+        "from_attributes": True
+    }
