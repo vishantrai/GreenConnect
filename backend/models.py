@@ -65,9 +65,56 @@ class LandDonationPost(Base):
     image_url = Column(String, nullable=False)
     special_note = Column(String, nullable=False)
 
+class Supporters(Base):
+    __tablename__="supporters"
 
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False ) 
+    donor_type = Column(String, nullable=False )
+    mobile_number = Column(String, nullable=False) #mobile should not be unique because one number can be used for multiple posts
+    email= Column(String, nullable=True)
 
+class SaplingDonor(Base):
+    __tablename__ = "sapling_donor"
 
+    user_id = Column(Integer, ForeignKey("supporters.id"), primary_key=True)
+    tree_type = Column(String, nullable=True)
+    quantity = Column(Integer, nullable=True)
+    special_note = Column(String, nullable=True)
+
+class EquipmentDonor(Base):
+
+    __tablename__ = "equipment_donor"
+
+    user_id = Column(Integer, ForeignKey("supporters.id"), primary_key=True)
+    spades = Column(Boolean, nullable=True)
+    equipment_num1 = Column(Integer, nullable=True)
+
+    shovel = Column(Boolean, nullable=True)
+    equipment_num2 = Column(Integer, nullable=True)
+
+    khurpa = Column(Boolean, nullable=True)
+    equipment_num3 = Column(Integer, nullable=True)
+
+    water_can = Column(Boolean, nullable=True)
+    equipment_num4 = Column(Integer, nullable=True)
+
+    other_equipment = Column(String, nullable=True)
+    other_equipment_number = Column(Integer, nullable=True)
+
+class LabourDonor(Base):
+    __tablename__ = "labour_donor " 
+
+    user_id = Column(Integer, ForeignKey("supporters.id"), primary_key=True)
+    no_of_people = Column(Integer, nullable=True, default= 5)
+    availabilty = Column(TIMESTAMP(timezone=True),nullable=False)
+
+class LogisticHelp(Base):
+
+    __tablename__= "logistic help"
+    user_id = Column(Integer, ForeignKey("supporters.id"), primary_key=True)
+    mode_of_transport = Column(String, nullable=True)
+    max_distance = Column(Integer, nullable=True, default= 10)
 
 #notes
 #we cannot define more than one table in one class of the sqlalchemy so for each table create different class

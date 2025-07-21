@@ -123,3 +123,34 @@ class LandDonorOut(CreatePost):
     model_config = {
         "from_attributes": True
     }
+
+
+class SaplingDonor(CreatePost):
+    tree_type: str
+    quantity: int
+    special_note: str
+
+class EquipmentDonor(CreatePost):
+    spades: bool
+    equipment_num1: Optional[int] = None
+    shovel: bool
+    equipment_num2: Optional[int] = None
+    khurpa: bool
+    equipment_num3: Optional[int] = None
+    water_can: bool
+    equipment_num4: int
+    other_equipment: str #the other equipment should be specified by name and number
+
+class LabourDonor(CreatePost):
+    no_of_people: Optional[int] = 5
+    availability: datetime
+
+class LogisticHelp:
+    mode_of_transport: str
+    max_distance: Optional[int] = 10
+
+class SupportDonor(CreatePost):
+    pass
+    model_config = {
+        "from_attributes": True
+    }
