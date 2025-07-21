@@ -155,3 +155,31 @@ class SupportersOut(CreatePost):
     model_config = {
         "from_attributes": True
     }
+
+class TreeCareRequest(BaseModel):
+    name: str #(in future it will be replaced by a option where it features name same as username for now it is manual)
+    mobile_number: str
+    email: Optional[EmailStr] = None
+    tree_type: str
+    current_condition: Optional[str] = None
+    water_need: bool
+    fence_need: bool
+    pest_control: bool
+    soil_health: bool
+    physical_damage_protection: bool
+    other_issue: str
+    location: str
+    latitude: float
+    longitude: float
+    image_url: Optional[str] = None 
+    special_msg: Optional[str] = None
+
+class TreeCareRequestOut(BaseModel):
+    id: int
+    name:str
+
+    model_config = {
+        "from_attributes": True
+    }
+
+class 
