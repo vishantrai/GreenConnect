@@ -149,8 +149,9 @@ class LogisticHelp:
     mode_of_transport: str
     max_distance: Optional[int] = 10
 
-class SupportDonor(CreatePost):
+class SupportersOut(CreatePost):
     pass
+
     model_config = {
         "from_attributes": True
     }
