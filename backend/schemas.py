@@ -182,4 +182,3 @@ class TreeCareRequestOut(BaseModel):
         "from_attributes": True
     }
 
-class 
