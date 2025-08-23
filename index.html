@@ -3,9 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GreenConnect - Connecting Nature Lovers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'green-primary': '#2E7D32',
+                        'beige-light': '#F4E1C1',
+                        'brown-earth': '#5D4037',
+                        'blue-sky': '#81D4FA'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .dropdown-hidden { display: none; }
+        .dropdown-visible { display: block; }
+        .leaf-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232E7D32' fill-opacity='0.03'%3E%3Cpath d='M10 2c-4 0-8 4-8 8s4 8 8 8 8-4 8-8-4-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
 </head>
-<body>
-    <div> Green connet sbse bakwas project</div>
-</body>
+<body class="bg-beige-light min-h-screen leaf-pattern">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg border-b-2 border-green-primary/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo and Location -->
+                <div class="flex items-center space-x-6">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-green-primary rounded-full flex items-center justify-center shadow-md">
+                            <span class="text-white font-bold text-lg">GC</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Location Input -->
+                    <div class="flex items-center space-x-2 bg-gray-50 rounded-full px-4 py-2 border border-gray-200">
+                        <svg class="w-4 h-4 text-green-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <input type="text" placeholder="Enter location" class="bg-transparent border-none outline-none text-sm w-32">
+                        <button class="bg-blue-sky hover:bg-blue-sky/80 text-white px-3 py-1 rounded-full text-xs transition-colors">
+                            GPS
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-lg mx-8">
+                    <div class="relative">
+                        <input type="text" placeholder="Search donors, posts, or area..." class="w-full bg-gray-50 border border-gray-200 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-green-primary focus:border-transparent">
+                        <svg class="absolute left-3 top-2.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Right Navigation -->
+                <div class="flex items-center space-x-4">
+                    <button class="bg-green-primary hover:bg-green-primary/90 text-white px-6 py-2 rounded-full font-medium transition-colors shadow-md">
+                        Donate
+                    </button>
+                    <a href="#" class="text-brown-earth hover:text-green-primary font-medium transition-colors">About Us</a>
+                    
+                    <!-- Profile Dropdown -->
+                    <div class="relative">
+                        <button onclick="toggleDropdown()" class="w-10 h-10 bg-brown-earth rounded-full flex items-center justify-center text-white hover:bg-brown-earth/90 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <div id="profileDropdown" class="dropdown-hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg">Dashboard</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Posts</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Saved Posts</a>
+                            <hr class="border-gray-200">
+                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-50 rounded-b-lg">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Category Buttons -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <button class="category-btn bg-white hover:bg-green-primary/5 rounded-full p-8 shadow-lg border-2 border-transparent hover:border-green-primary/20 transition-all group">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-primary/20 transition-colors">
+                        <svg class="w-8 h-8 text-green-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-brown-earth group-hover:text-green-primary transition-colors">Land Donors</h3>
+                </div>
+            </button>
+
+            <button class="category-btn bg-white hover:bg-green-primary/5 rounded-full p-8 shadow-lg border-2 border-transparent hover:border-green-primary/20 transition-all group">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-sky/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-sky/30 transition-colors">
+                        <svg class="w-8 h-8 text-blue-sky" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-brown-earth group-hover:text-green-primary transition-colors">Volunteers</h3>
+                </div>
+            </button>
+
+            <button class="category-btn bg-white hover:bg-green-primary/5 rounded-full p-8 shadow-lg border-2 border-transparent hover:border-green-primary/20 transition-all group">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-primary/20 transition-colors">
+                        <svg class="w-8 h-8 text-green-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-brown-earth group-hover:text-green-primary transition-colors">Sapling Donors</h3>
+                </div>
+            </button>
+
+            <button class="category-btn bg-white hover:bg-green-primary/5 rounded-full p-8 shadow-lg border-2 border-transparent hover:border-green-primary/20 transition-all group">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-brown-earth/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brown-earth/20 transition-colors">
+                        <svg class="w-8 h-8 text-brown-earth" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-brown-earth group-hover:text-green-primary transition-colors">Tree Care</h3>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <div class="flex gap-8">
+            <!-- Left Section - Post Feed (70%) -->
+            <div class="flex-1 w-full lg:w-[70%]">
+                <h2 class="text-2xl font-bold text-brown-earth mb-6 flex items-center">
+                    <svg class="w-6 h-6 text-green-primary mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
+                    </svg>
+                    Community Feed
+                </h2>
+                
+                <!-- Post Cards -->
+                <div class="space-y-6">
+                    <!-- Post 1 -->
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-green-primary rounded-full flex items-center justify-center">
+                                    <span class="text-white font-semibold">MG</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-brown-earth">Maya Gardens</h3>
+                                    <p class="text-sm text-gray-500">Land Donor • 2 hours ago</p>
+                                </div>
+                            </div>
+                            <span class="bg-green-primary/10 text-green-primary px-3 py-1 rounded-full text-sm font-medium">Available</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">🌱 Offering 2 acres of fertile land in the suburbs for community tree planting. Perfect soil conditions and water access available. Looking for dedicated volunteers!</p>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>📍 Green Valley, CA</span>
+                            <div class="flex space-x-4">
+                                <button class="text-green-primary hover:text-green-primary/80 font-medium">Contact</button>
+                                <button class="text-gray-400 hover:text-gray-600">💚 24</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post 2 -->
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-blue-sky rounded-full flex items-center justify-center">
+                                    <span class="text-white font-semibold">EV</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-brown-earth">EcoVolunteers</h3>
+                                    <p class="text-sm text-gray-500">Volunteer Group • 4 hours ago</p>
+                                </div>
+                            </div>
+                            <span class="bg-blue-sky/20 text-blue-sky px-3 py-1 rounded-full text-sm font-medium">Active</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">🤝 Weekend tree planting event this Saturday! We have 50+ saplings ready and need helping hands. Bring gloves and enthusiasm - we'll provide the rest!</p>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>📍 Central Park, NY</span>
+                            <div class="flex space-x-4">
+                                <button class="text-green-primary hover:text-green-primary/80 font-medium">Join Event</button>
+                                <button class="text-gray-400 hover:text-gray-600">💚 18</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post 3 -->
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-brown-earth rounded-full flex items-center justify-center">
+                                    <span class="text-white font-semibold">GN</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-brown-earth">Green Nursery Co.</h3>
+                                    <p class="text-sm text-gray-500">Sapling Donor • 6 hours ago</p>
+                                </div>
+                            </div>
+                            <span class="bg-green-primary/10 text-green-primary px-3 py-1 rounded-full text-sm font-medium">Donating</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">🌳 Free native oak saplings available! We have 200+ healthy 2-year-old saplings perfect for reforestation projects. First come, first served.</p>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>📍 Portland, OR</span>
+                            <div class="flex space-x-4">
+                                <button class="text-green-primary hover:text-green-primary/80 font-medium">Reserve</button>
+                                <button class="text-gray-400 hover:text-gray-600">💚 31</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Section - Ads (30%) -->
+            <div class="hidden lg:block w-[30%]">
+                <h3 class="text-lg font-semibold text-brown-earth mb-4">Sponsored</h3>
+                <div class="space-y-4">
+                    <!-- Ad 1 -->
+                    <div class="bg-gradient-to-br from-green-primary/10 to-blue-sky/10 rounded-2xl p-6 border border-green-primary/20">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-green-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-green-primary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <h4 class="font-semibold text-brown-earth mb-2">EcoTools Pro</h4>
+                            <p class="text-sm text-gray-600 mb-4">Professional gardening tools for your tree planting projects</p>
+                            <button class="bg-green-primary text-white px-4 py-2 rounded-full text-sm hover:bg-green-primary/90 transition-colors">Learn More</button>
+                        </div>
+                    </div>
+
+                    <!-- Ad 2 -->
+                    <div class="bg-gradient-to-br from-blue-sky/10 to-beige-light rounded-2xl p-6 border border-blue-sky/20">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-sky/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-blue-sky" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h4 class="font-semibold text-brown-earth mb-2">TreeTracker App</h4>
+                            <p class="text-sm text-gray-600 mb-4">Monitor your planted trees' growth with our mobile app</p>
+                            <button class="bg-blue-sky text-white px-4 py-2 rounded-full text-sm hover:bg-blue-sky/90 transition-colors">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown.classList.contains('dropdown-hidden')) {
+                dropdown.classList.remove('dropdown-hidden');
+                dropdown.classList.add('dropdown-visible');
+            } else {
+                dropdown.classList.remove('dropdown-visible');
+                dropdown.classList.add('dropdown-hidden');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const profileButton = event.target.closest('button');
+            
+            if (!profileButton || !profileButton.onclick) {
+                dropdown.classList.remove('dropdown-visible');
+                dropdown.classList.add('dropdown-hidden');
+            }
+        });
+
+        // Add click functionality to category buttons
+        document.querySelectorAll('.category-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const category = this.querySelector('h3').textContent;
+                alert(Exploring ${category} section! This would filter the feed to show relevant posts.);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f671ce9653547a',t:'MTc1NTIzNzM0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
