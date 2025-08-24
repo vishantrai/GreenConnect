@@ -25,6 +25,7 @@ def create_user(user: UserCreate, db: Session = Depends (get_db) ):
 
     return new_user
 
+
 #this is for the address storing of that user, the frontend has to take the returned id and run this route to enter the address, one user can save more than one address 
 @router.post("/{user_id}/address", status_code=status.HTTP_201_CREATED ,response_model= AddressOut)
 def address(user_id: int, address: AddressCreate, db: Session = Depends(get_db)):
@@ -35,8 +36,9 @@ def address(user_id: int, address: AddressCreate, db: Session = Depends(get_db))
 
     return new_address 
 
-# address update, - first we need to fetch the user detail then the addresses saved, there can be multiple address so we need to take the address id and then update option will be enabled 
 
+
+# address update, - first we need to fetch the user detail then the addresses saved, there can be multiple address so we need to take the address id and then update option will be enabled 
 @router.patch("/{user_id}/address/{address_id}", status_code=status.HTTP_201_CREATED, response_model=AddressOut)
 def addressUpdate(user_id:int, address_id: int, address_update: AddressUpdate, db: Session = Depends(get_db)):
     #-> user check
@@ -60,6 +62,30 @@ def addressUpdate(user_id:int, address_id: int, address_update: AddressUpdate, d
     db.commit()
     db.refresh(db_address)
     return db_address
+
+
+# delete address 
+@router.delete("/{user_id}/address/{address_id}", status_code=status.HTTP_200_OK)
+def address_deleted(user_id: int, address_id: int, db: Session = Depends(get_db)):
+
+    #checking the user id is valid or not
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="user not found")
+    
+    #checking the address id is valid or not
+    address = db.query(models.Address).filter(models.Address.id == address_id, models.Address.user_id == user_id).first()
+    if not address:
+        raise HTTPException(status_code=404, detail="address not found")
+
+    # delete the address
+    db.delete(address)
+    db.commit()
+    return {"message": "Your address is deleted successfully"}
+
+
+
+
 
 
 #NOTES
