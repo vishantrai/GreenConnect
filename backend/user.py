@@ -9,9 +9,9 @@ router = APIRouter(
     tags=["Users"]
 )
 
-User = schemas.UserCreate
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model= schemas.UserOut)
+#this is for the user create, mainly it is used at the place of registration of user
+@router.post("/register", status_code=status.HTTP_201_CREATED, response_model= schemas.UserOut)
 def create_user(user: schemas.UserCreate, db: Session = Depends (get_db) ):
 
     #hasing the password
@@ -24,11 +24,14 @@ def create_user(user: schemas.UserCreate, db: Session = Depends (get_db) ):
 
     return new_user
 
-@router.post("/address", status_code=status.HTTP_201_CREATED) #,response_model= schemas.AddressOut)
-def address(address: schemas.Address, db: Session = Depends(get_db)):
-    new_address = models.Address(**address.dict())
+#this is for the address storing of that user, the frontend has to take the returned id and run this route to enter the address, one user can save more than one address 
+@router.post("/{user_id}/address", status_code=status.HTTP_201_CREATED) #,response_model= schemas.AddressOut)
+def address(user_id: int, address: schemas.Address, db: Session = Depends(get_db)):
+    new_address = models.Address(user_id = user_id, **address.dict())
     db.add(new_address)
     db.commit()
     db.refresh(new_address)
 
-    return ("Address saved")
+    return new_address.city
+
+# address update, - first we need to fetch the user detail then the addresses saved, there can be multiple address so we need to take the address id and then update option will be enabled 

@@ -19,9 +19,9 @@ class Address(Base):
     __tablename__ = "addresses"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    address_line = Column(String, nullable=False)
-    locality = Column(String, nullable=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    address_line = Column(String, nullable=True)
+    locality = Column(String, nullable=False)
     city = Column(String, nullable=False)
     state = Column(String, nullable=False)
     country = Column(String, default="BHARAT")

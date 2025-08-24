@@ -43,20 +43,33 @@ class UserOut(BaseModel):
 
 
 class Address(BaseModel):
-    user_id: int
     address_line: str
     locality: Optional[str] = None #it is not cumpulsory to enter the locality
     city: str
     state: str
     country: str = "BHARAT"
     pincode: str
+
     @validator("pincode")
     def validate_pincode(cls, v):
         if not re.fullmatch(r"\d{6}", v):
             raise ValueError("Pincode must be exactly 6 digits")
         return v
-    latitude: float
-    longitude: float
+    
+    latitude: float #this is good but at production level it will create trouble so we should make the latitude longitude validator
+    longitude: float #below are the validator
+
+    @validator("latitude")
+    def validate_latitude(cls, v):
+        if not -90 <= v <= 90:
+            raise ValueError("Invalid Latitude")
+        return v
+    
+    @validator("longitude")
+    def validate_longitude(cls, v):
+        if not -180 <= v <= 180:
+            raise ValueError("Invalid Longitude")
+        return v
 
 class AddressUpdate(Address):
     pass
