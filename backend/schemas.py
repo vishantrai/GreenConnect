@@ -42,7 +42,7 @@ class UserOut(BaseModel):
     }
 
 
-class Address(BaseModel):
+class AddressCreate(BaseModel):
     address_line: str
     locality: Optional[str] = None #it is not cumpulsory to enter the locality
     city: str
@@ -71,13 +71,21 @@ class Address(BaseModel):
             raise ValueError("Invalid Longitude")
         return v
 
-class AddressUpdate(Address):
-    pass
+# in case of change in address or update the address this schema should be followed, we are giving the user all the entries pre filled just the entries which user want to change can edit and save 
+class AddressUpdate(BaseModel):
+    address_line: Optional[str] = None #here the all fields are optional that if user want he can enter new data if not then the user can leave it as it is 
+    locality: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+    pincode: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 class AddressOut(BaseModel):
     id:int
-    name: str
-    address_line: str
+    user : UserOut 
+    city: str
 
     model_config = {
         "from_attributes": True

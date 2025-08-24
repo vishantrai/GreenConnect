@@ -2,6 +2,7 @@
 from sqlalchemy import Column, Integer, Float, Boolean, String, ForeignKey, NUMERIC
 from sqlalchemy.sql.expression import null, text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
+from sqlalchemy.orm import relationship
 import psycopg2
 from database import Base
 
@@ -20,6 +21,7 @@ class Address(Base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user = relationship("User")
     address_line = Column(String, nullable=True)
     locality = Column(String, nullable=False)
     city = Column(String, nullable=False)
