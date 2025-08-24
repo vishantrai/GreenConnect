@@ -11,9 +11,7 @@ app = FastAPI()
 while True:
     try:
         conn = psycopg2.connect(host='localhost', database = 'GreenConnect', user='postgres', password = 'Vish@2323', cursor_factory = RealDictCursor) #
-
         cursor=conn.cursor()
-
         print("connection is successful become happy!")
         break
     except Exception as error:

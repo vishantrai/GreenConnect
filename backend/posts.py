@@ -1,15 +1,24 @@
 # this is for handling the post creation and post access 
-from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi import APIRouter, status, Depends, HTTPException, Query
 import schemas, models
 from sqlalchemy.orm import Session
 from database import get_db
+from typing import Optional
 
 router = APIRouter(
     prefix="/posts",
     tags = ["Posts"]
 )
 
-Post = schemas.LandDonor
+# we want at the homepage we show all the post, if the user has enabled the location then based on the location if not then all the posts 
+# we are creating the route for the getting the post, but there are multiple filters and we are implementing all at one route  *SOMETHING NEW*
+
+@router.get("/posts", status_code=status.HTTP_200_OK)
+def get_post(lat: Optional[float] = Query(None, description="Latitude"), #here the description is used for the documentation 
+            long: Optional[float] = Query(None, description="Longitude"), 
+            filter: Optional[str] = Query(None, description="filter by type: land donor, sapling donor, volunteers, equipments"), db: Session = Depends(get_db)):
+    if not lat or long:
+        return db.query()
 
 #land donors post route
 @router.post("/land_donor", status_code=status.HTTP_201_CREATED, response_model=schemas.LandDonorOut)

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Depends, HTTPException
-import schemas, utils, models
+import utils, models
 from sqlalchemy.orm import Session
 from database import get_db
 from schemas import UserCreate,UserOut, AddressCreate, AddressOut, AddressUpdate
@@ -24,6 +24,14 @@ def create_user(user: UserCreate, db: Session = Depends (get_db) ):
     db.refresh(new_user)
 
     return new_user
+
+# users get operation - each user has access to its profile info 
+@router.get("/{user_id}", status_code=status.HTTP_200_OK, response_model=UserOut)
+def get_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="user not found")
+    return user
 
 
 #this is for the address storing of that user, the frontend has to take the returned id and run this route to enter the address, one user can save more than one address 
@@ -65,7 +73,7 @@ def addressUpdate(user_id:int, address_id: int, address_update: AddressUpdate, d
 
 
 # delete address 
-@router.delete("/{user_id}/address/{address_id}", status_code=status.HTTP_200_OK)
+@router.delete("/{user_id}/address/{address_id}", status_code=status.HTTP_200_OK) #HTTP_204_NO_CONTENT - return nothing so whenever you are thinking to return something avoid using this http status code
 def address_deleted(user_id: int, address_id: int, db: Session = Depends(get_db)):
 
     #checking the user id is valid or not

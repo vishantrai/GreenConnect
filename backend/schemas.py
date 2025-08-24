@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field, validator, model_validator
 from datetime import datetime
+from schemas import *
 from typing import Optional
 import re #re lets you search, match, extract, and manipulate text
 
@@ -35,7 +36,8 @@ class UserCreate(BaseModel):
 class UserOut(BaseModel):
     id: int
     name: str
-    created_at: datetime
+    mobile_no: str
+    email: EmailStr
 
     model_config = {
         "from_attributes": True
