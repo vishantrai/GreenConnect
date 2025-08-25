@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field, validator, model_validator
 from datetime import datetime
 from schemas import *
-from typing import Optional
+from typing import Optional, Union
 import re #re lets you search, match, extract, and manipulate text
 
 #BaseModel-Hey Pydantic, here’s the kind of data I expect. Validate it, clean it, and throw hands if something's off.
@@ -116,16 +116,20 @@ class UserLogin(BaseModel):
     password: str
 
 # Creating schemas for the posts
-class CreatePost(BaseModel):
+class PostBase(BaseModel):
     name: str #(in future it will be replaced by a option where it features name same as username for now it is manual)
+    title: str
     donor_type: str
     mobile_number: str
     email: Optional[EmailStr] = None
-
-class LandDonor(CreatePost):
     address: str
     latitude: float
     longitude: float
+    description: str
+    image_url: str
+
+# post schemas 
+class LandDonor(BaseModel):
     area: float
     area_unit: str
     soil_type: str
@@ -137,71 +141,70 @@ class LandDonor(CreatePost):
     road_access: bool
     fencing: bool
     water_source: bool
-    image_url: str
-    special_note: str
+    
 
-class LandDonorOut(CreatePost):
-    pass
-
-    model_config = {
-        "from_attributes": True
-    }
-
-
-class SaplingDonor(CreatePost):
+class SaplingDonor(BaseModel):
     tree_type: str
     quantity: int
-    special_note: str
 
-class EquipmentDonor(CreatePost):
+class EquipmentDonor(BaseModel):
     spades: bool
-    equipment_num1: Optional[int] = None
+    quantity1: Optional[int] = None
     shovel: bool
-    equipment_num2: Optional[int] = None
+    quantity2: Optional[int] = None
     khurpa: bool
-    equipment_num3: Optional[int] = None
+    quantity3: Optional[int] = None
     water_can: bool
-    equipment_num4: int
-    other_equipment: str #the other equipment should be specified by name and number
+    quantity4: Optional[int] = None
+    other_equipment: Optional[str] = None #the other equipment should be specified by name and number
+    quantityM: Optional[int] = None
 
-class LabourDonor(CreatePost):
+class LabourDonor(BaseModel):
     no_of_people: Optional[int] = 5
     availability: datetime
 
-class LogisticHelp:
+class LogisticHelp(BaseModel):
     mode_of_transport: str
     max_distance: Optional[int] = 10
 
-class SupportersOut(CreatePost):
-    pass
-
-    model_config = {
-        "from_attributes": True
-    }
 
 class TreeCareRequest(BaseModel):
-    name: str #(in future it will be replaced by a option where it features name same as username for now it is manual)
-    mobile_number: str
-    email: Optional[EmailStr] = None
     tree_type: str
     current_condition: Optional[str] = None
     water_need: bool
     fence_need: bool
     pest_control: bool
-    soil_health: bool
-    physical_damage_protection: bool
-    other_issue: str
-    location: str
-    latitude: float
-    longitude: float
-    image_url: Optional[str] = None 
-    special_msg: Optional[str] = None
+    physical_damage: bool
+    soil_health: str
+   
+class PostCreate(PostBase): 
+# what is happening here
+# Here we are combining both the schema like all the posts have some common data which we have saved in the postbase and the specific type post details  
+    details: Optional[Union[
+                LandDonor,
+                EquipmentDonor,
+                SaplingDonor,
+                LogisticHelp,
+                SaplingDonor,
+                TreeCareRequest
+            ]]  = None
 
-class TreeCareRequestOut(BaseModel):
+
+#response model for the post is for the user who is creating the post, it is not what we are going to show as post("A little confusion")
+class PostOut(PostBase):
     id: int
-    name:str
+    created_at: datetime
+    updated_at: datetime
 
+    details: Optional[Union[
+                LandDonor,
+                EquipmentDonor,
+                SaplingDonor,
+                LogisticHelp,
+                SaplingDonor,
+                TreeCareRequest          
+                            ]] = None
+    
     model_config = {
         "from_attributes": True
-    }
-
+        }
