@@ -32,6 +32,7 @@ class UserCreate(BaseModel):
     model_config = {
         "from_attributes": True
     }
+    created_at: datetime
     
 class UserOut(BaseModel):
     id: int
@@ -72,6 +73,7 @@ class AddressCreate(BaseModel):
         if not -180 <= v <= 180:
             raise ValueError("Invalid Longitude")
         return v
+    created_at: datetime
 
 # in case of change in address or update the address this schema should be followed, we are giving the user all the entries pre filled just the entries which user want to change can edit and save 
 class AddressUpdate(BaseModel):
@@ -83,6 +85,7 @@ class AddressUpdate(BaseModel):
     pincode: Optional[str] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+    created_at: datetime
 
 class AddressOut(BaseModel):
     id:int
@@ -119,16 +122,17 @@ class UserLogin(BaseModel):
 class PostBase(BaseModel):
     name: str #(in future it will be replaced by a option where it features name same as username for now it is manual)
     title: str
-    donor_type: str
     mobile_number: str
     email: Optional[EmailStr] = None
     address: str
     latitude: float
     longitude: float
+    post_type: str
     description: str
     image_url: str
+    created_at: datetime
 
-# post schemas 
+# post schemas  
 class LandDonor(BaseModel):
     area: float
     area_unit: str
@@ -165,7 +169,7 @@ class LabourDonor(BaseModel):
 
 class LogisticHelp(BaseModel):
     mode_of_transport: str
-    max_distance: Optional[int] = 10
+    max_distance: Optional[int] = 10 
 
 
 class TreeCareRequest(BaseModel):
@@ -194,7 +198,7 @@ class PostCreate(PostBase):
 class PostOut(PostBase):
     id: int
     created_at: datetime
-    updated_at: datetime
+    # updated_at: datetime
 
     details: Optional[Union[
                 LandDonor,
