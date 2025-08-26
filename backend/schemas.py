@@ -163,7 +163,7 @@ class EquipmentDonor(BaseModel):
     other_equipment: Optional[str] = None #the other equipment should be specified by name and number
     quantityM: Optional[int] = None
 
-class LabourDonor(BaseModel):
+class Volunteers(BaseModel):
     no_of_people: Optional[int] = 5
     availability: datetime
 
@@ -189,7 +189,7 @@ class PostCreate(PostBase):
                 EquipmentDonor,
                 SaplingDonor,
                 LogisticHelp,
-                SaplingDonor,
+                Volunteers,
                 TreeCareRequest
             ]]  = None
 
@@ -205,7 +205,7 @@ class PostOut(PostBase):
                 EquipmentDonor,
                 SaplingDonor,
                 LogisticHelp,
-                SaplingDonor,
+                Volunteers,
                 TreeCareRequest          
                             ]] = None
     
