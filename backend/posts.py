@@ -11,6 +11,72 @@ router = APIRouter(
     tags = ["Posts"]
 )
 
+# route to create the post 
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.PostOut)
+def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
+    new_post = models.Post(**post.dict(exclude={"details"}))
+    db.add(new_post)
+    db.commit()
+    db.refresh(new_post)
+
+    if post.post_type == "land_donor" and isinstance(post.details, schemas.LandDonor):
+        land_post = models.LandDonationPost(
+            post_id = new_post.id,
+            **post.details.dict()
+        )
+        db.add(land_post)
+        db.commit()
+        db.refresh(land_post)
+
+    if post.post_type == "sapling_donor" and isinstance(post.details, schemas.SaplingDonor):
+        sapling_post = models.SaplingDonor(
+            post_id = new_post.id,
+            **post.details.dict()
+        )
+        db.add(sapling_post)
+        db.commit()
+        db.refresh(sapling_post)
+
+    if post.post_type == "equipment_donor" and isinstance(post.details, schemas.EquipmentDonor):
+        equipment_post = models.EquipmentDonor(
+            post_id = new_post.id,
+            **post.details.dict()
+        )
+        db.add(equipment_post)
+        db.commit()
+        db.refresh(equipment_post)
+
+    if post.post_type == "logistic_help" and isinstance(post.details, schemas.LogisticHelp):
+        logistic_post = models.LogisticHelp(
+            post_id = new_post.id,
+            **post.details.dict()
+        )
+        db.add(logistic_post)
+        db.commit()
+        db.refresh(logistic_post)
+
+    if post.post_type == "volunteers" and isinstance(post.details, schemas.Volunteers):
+        volunteers_post = models.Volunteers(
+            post_id = new_post.id,
+            **post.details.dict()
+        )
+        db.add(volunteers_post)
+        db.commit()
+        db.refresh(volunteers_post)
+
+    if post.post_type == "tree_care_request" and isinstance(post.details, schemas.TreeCareRequest):
+        care_request_post = models.CareRequests(
+            post_id = new_post.id,
+            **post.details.dict()
+        )
+        db.add(care_request_post)
+        db.commit()
+        db.refresh(care_request_post)
+
+    return new_post
+
+
+
 # we want at the homepage we show all the post, if the user has enabled the location then based on the location if not then all the posts 
 # we are creating the route for the getting the post, but there are multiple filters and we are implementing all at one route  *SOMETHING NEW*
 
