@@ -48,6 +48,7 @@ class Post(Base):
     __tablename__ = "posts"
 
     id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
     name = Column(String, nullable=False ) 
     title = Column(String, nullable=False)
     mobile_number = Column(String, nullable=False) #mobile should not be unique because one number can be used for multiple posts
@@ -60,10 +61,20 @@ class Post(Base):
     image_url = Column(String, nullable=False)
     created_at=Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
+    # link with specific post types
+    land_post = relationship("LandDonationPost", back_populates="post", uselist=False)
+    volunteers_post = relationship("Volunteers", back_populates="post", uselist=False)
+    sapling_post = relationship("SaplingDonor", back_populates="post", uselist=False)
+    care_request_post = relationship("CareRequests", back_populates="post", uselist=False)
+    equipment_post = relationship("EquipmentDonor", back_populates="post", uselist=False)
+    logistic_post = relationship("LogisticHelp", back_populates="post", uselist=False)
+
+
 class LandDonationPost(Base):
     __tablename__ = "land_donations"
 
-    id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
+    post_id = Column(Integer, ForeignKey("posts.id"))
     area = Column(Float, nullable=False)
     area_unit = Column(String, nullable=False)
     soil_type = Column(String, nullable=False)
@@ -76,20 +87,28 @@ class LandDonationPost(Base):
     fencing = Column(Boolean, nullable=False)
     water_source = Column(Boolean, nullable=False)
 
+    # relationship back to Post
+    post = relationship("Post", back_populates="land_post")
+
 
 class SaplingDonor(Base):
     __tablename__ = "sapling_donor"
 
-    id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
+    post_id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
     tree_type = Column(String, nullable=True)
     quantity = Column(Integer, nullable=True)
+
+    # relationship back to Post
+    post = relationship("Post", back_populates="sapling_post")
 
 
 class EquipmentDonor(Base):
 
     __tablename__ = "equipment_donor"
 
-    id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
+    post_id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
     spades = Column(Boolean, nullable=True)
     equipment_num1 = Column(Integer, nullable=True)
 
@@ -105,24 +124,36 @@ class EquipmentDonor(Base):
     other_equipment = Column(String, nullable=True)
     other_equipment_number = Column(Integer, nullable=True)
 
-class LabourDonor(Base):
-    __tablename__ = "labour_donor " 
+    # relationship back to Post
+    post = relationship("Post", back_populates="equipment_post")
 
-    id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
+class Volunteers(Base):
+    __tablename__ = "volunteer_donor" 
+
+    id = Column(Integer, primary_key=True, index=True)
+    post_id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
     no_of_people = Column(Integer, nullable=True, default= 5)
     availabilty = Column(TIMESTAMP(timezone=True),nullable=False)
 
-class LogisticHelp(Base):
-    __tablename__= "logistic help"
+    # relationship back to Post
+    post = relationship("Post", back_populates="volunteers_post")
 
-    id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
+class LogisticHelp(Base):
+    __tablename__= "logistic_help"
+
+    id = Column(Integer, primary_key=True, index=True)
+    post_id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
     mode_of_transport = Column(String, nullable=True)
     max_distance = Column(Integer, nullable=True, default= 10)
+
+    # relationship back to Post
+    post = relationship("Post", back_populates="logistic_post")
 
 class CareRequests(Base):
     __tablename__ = "care_requests"
 
-    id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
+    post_id = Column(Integer, ForeignKey("posts.id"), primary_key=True)
     tree_type = Column(String, nullable=False)
     current_condition = Column(String, nullable=False)
     water_need = Column(Boolean)
@@ -131,6 +162,8 @@ class CareRequests(Base):
     physical_damage = Column(Boolean)
     soil_health = Column(String)
 
+    # relationship back to Post
+    post = relationship("Post", back_populates="care_request_post")
 
 #notes
 #we cannot define more than one table in one class of the sqlalchemy so for each table create different class
