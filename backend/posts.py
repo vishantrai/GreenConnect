@@ -11,7 +11,7 @@ router = APIRouter(
     tags = ["Posts"]
 )
 
-# route to create the post 
+# route to create the post "SOMETHING NEW"
 # basically we are creating the route for creating the post but here the problem is that we are taking input in two different tables so we have to create the route as the common details go to the common table and the other details go to the other table as per the post type 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.PostOut)
 def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
@@ -81,8 +81,9 @@ def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
 # we want at the homepage we show all the post, if the user has enabled the location then based on the location if not then all the posts 
 # we are creating the route for the getting the post, but there are multiple filters and we are implementing all at one route  *SOMETHING NEW*
 
-@router.get("/", status_code=status.HTTP_200_OK, response_model=list[schemas.PostOut])
-def get_post(lat: Optional[float] = Query(None, description="Latitude"), #here the description is used for the documentation 
+@router.get("/", status_code=status.HTTP_200_OK, response_model=list[schemas.PostOut])  #here the respone is in the form of list because their can be more than one post
+def get_post( #here we are taking three optional values latitude, longitude, and filter and according to which we will show the posts
+            lat: Optional[float] = Query(None, description="Latitude"), #here the description is used for the documentation 
             long: Optional[float] = Query(None, description="Longitude"), 
             filter: Optional[str] = Query(None, description="filter by type: land donor, sapling donor, volunteers, equipments, logistic, "), 
             db: Session = Depends(get_db)):
@@ -90,8 +91,8 @@ def get_post(lat: Optional[float] = Query(None, description="Latitude"), #here t
     if lat is not None and long is not None:
         radius_km = 50  # distance in kilometers
 
-        # Haversine formula
-        data = db.query(models.Post).filter( 
+        # Haversine formula - isme jyada mind lgane ki jaroorat nhi hai ye jaisa hai waise hi chhor do
+        posts = db.query(models.Post).filter( 
             func.acos(
                 func.sin(func.radians(models.Post.latitude)) * func.sin(func.radians(lat)) +
                 func.cos(func.radians(models.Post.latitude)) * func.cos(func.radians(lat)) *
@@ -100,9 +101,9 @@ def get_post(lat: Optional[float] = Query(None, description="Latitude"), #here t
     )
 
     elif filter is not None:
-        data = db.query(models.Post).filter(models.Post.post_type == filter)
-
-    posts = db.query(models.Post).all()
+        posts = db.query(models.Post).filter(models.Post.post_type == filter)
+    else:
+        posts = db.query(models.Post).all()
 
     if not posts:
         raise HTTPException(status_code=404, detail="No post found")
@@ -111,7 +112,8 @@ def get_post(lat: Optional[float] = Query(None, description="Latitude"), #here t
 
 
 
-
+#notes - ? ke baad likhe hue key-value pair ko query parameter bolte hain. Frontend (React, Angular, ya browser me user action) query params bhejta hai.
+# Tum backend me bas ek "gate" khol rahe ho
 
 
 # this below code was creating trouble in query and search so we have made single route for all posts
