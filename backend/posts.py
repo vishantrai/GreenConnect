@@ -12,16 +12,17 @@ router = APIRouter(
 )
 
 # route to create the post 
+# basically we are creating the route for creating the post but here the problem is that we are taking input in two different tables so we have to create the route as the common details go to the common table and the other details go to the other table as per the post type 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.PostOut)
 def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
-    new_post = models.Post(**post.dict(exclude={"details"}))
+    new_post = models.Post(**post.dict(exclude={"details"})) #here we are extracting the input details from the frontend and saving it to the post table we are excluding details as they are for other table 
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
 
-    if post.post_type == "land_donor" and isinstance(post.details, schemas.LandDonor):
+    if post.post_type == "land_donor" and isinstance(post.details, schemas.LandDonor): #here we checking the post type and according to that we are sending the detail to that table, here the first case we are checking the post_type and the second thing which i am checking is the "isinstance()" it is a function which takes two values object and classname and then It checks if a given object is an instance (or subclass instance) of a particular class. here the post.details is the object for the landdonor class, isinstance will return true when the details will be instance of the class
         land_post = models.LandDonationPost(
-            post_id = new_post.id,
+            post_id = new_post.id, #here we are explicitly saving the post_id of the post in the landdonationpost table
             **post.details.dict()
         )
         db.add(land_post)

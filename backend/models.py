@@ -61,8 +61,8 @@ class Post(Base):
     image_url = Column(String, nullable=False)
     created_at=Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
-    # link with specific post types
-    land_post = relationship("LandDonationPost", back_populates="post", uselist=False)
+    # link with specific post types - 
+    land_post = relationship("LandDonationPost", back_populates="post", uselist=False) #Here the term relationship is a keyword which tells that the LandDonationPost and the Post class are related to each other, back_populates is like a two way mirror which tells that the Post and LandDonationPOst are connected both ways, uselist=false is used to tell that relationship is not one to many because default me one to many hota hai 
     volunteers_post = relationship("Volunteers", back_populates="post", uselist=False)
     sapling_post = relationship("SaplingDonor", back_populates="post", uselist=False)
     care_request_post = relationship("CareRequests", back_populates="post", uselist=False)
@@ -74,7 +74,7 @@ class LandDonationPost(Base):
     __tablename__ = "land_donations"
 
     id = Column(Integer, primary_key=True, index=True)
-    post_id = Column(Integer, ForeignKey("posts.id"))
+    post_id = Column(Integer, ForeignKey("posts.id")) #it is the foreign key which connects post and land donation table 
     area = Column(Float, nullable=False)
     area_unit = Column(String, nullable=False)
     soil_type = Column(String, nullable=False)
@@ -87,7 +87,7 @@ class LandDonationPost(Base):
     fencing = Column(Boolean, nullable=False)
     water_source = Column(Boolean, nullable=False)
 
-    # relationship back to Post
+    # relationship back to Post relationship("Post", ...) → This tells SQLAlchemy: # “Hey! This LandDonationPost is connected to the Post table.” # back_populates="land_post" → This is the mirror of what you wrote in your Post model:
     post = relationship("Post", back_populates="land_post")
 
 
