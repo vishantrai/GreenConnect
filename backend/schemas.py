@@ -200,14 +200,13 @@ class PostOut(PostBase):
     created_at: datetime
     # updated_at: datetime
 
-    details: Optional[Union[
-                LandDonor,
-                EquipmentDonor,
-                SaplingDonor,
-                LogisticHelp,
-                Volunteers,
-                TreeCareRequest          
-                            ]] = None
+    land_post: Optional[LandDonor]
+    volunteers_post: Optional[Volunteers]
+    sapling_post: Optional[SaplingDonor]               
+    care_request_post: Optional[TreeCareRequest]
+    logistic_post:Optional[LogisticHelp]
+    equipment_post: Optional[EquipmentDonor]            
+
     
     model_config = {
         "from_attributes": True
