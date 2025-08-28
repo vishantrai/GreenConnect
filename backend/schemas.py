@@ -29,6 +29,8 @@ class UserCreate(BaseModel):
         if self.password != self.confirm_password:
             raise ValueError("Password and Confirm Password do not match ")
         return self 
+    
+    #this below code is telling to read the data even it is not of type dict  
     model_config = {
         "from_attributes": True
     }
