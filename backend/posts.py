@@ -1,6 +1,6 @@
 # this is for handling the post creation and post access 
 from fastapi import APIRouter, status, Depends, HTTPException, Query
-import schemas, models
+import schemas, models, oauth2
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from database import get_db
@@ -14,7 +14,7 @@ router = APIRouter(
 # route to create the post "SOMETHING NEW"
 # basically we are creating the route for creating the post but here the problem is that we are taking input in two different tables so we have to create the route as the common details go to the common table and the other details go to the other table as per the post type 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.PostOut)
-def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
+def create_post(post: schemas.PostCreate, db: Session = Depends(get_db), used_id: int = Depends(oauth2.get_current_user)):
     new_post = models.Post(**post.dict(exclude={"details"})) #here we are extracting the input details from the frontend and saving it to the post table we are excluding details as they are for other table 
     db.add(new_post)
     db.commit()
