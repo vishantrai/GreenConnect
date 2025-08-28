@@ -213,3 +213,15 @@ class PostOut(PostBase):
     model_config = {
         "from_attributes": True
         }
+    
+# login schemas
+class Login(BaseModel):
+    email: EmailStr
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    id:Optional[str]
