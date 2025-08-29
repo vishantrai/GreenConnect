@@ -40,4 +40,4 @@ def verify_access_token(token: str, credential_exceptions): #the token is shared
 def get_current_user(token: str = Depends(oauth2_scheme)): # this is a dependency function which uses Depends(), this token: str = Depends(oauth2_scheme) automatically HTTP request ke header se bearer token ko pick krega 
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="could not validate credentials", headers={"WWW-Authenticate": "Bearer"}) # if the token is invalid then error raised 
 
-    return verify_access_token(token, credentials_exception)  #calling the verify_access_token function 
+    return verify_access_token(token, credentials_exception)  #calling the verify_access_token function  
