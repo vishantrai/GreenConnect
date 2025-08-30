@@ -1,8 +1,11 @@
 from sqlalchemy import create_engine #the engine is like the hotline between your Python code and your database — it talks to your DB and executes SQL under the hood
 from sqlalchemy.ext.declarative import declarative_base #provides all the structure, but lets your models party with columns and rows
 from sqlalchemy.orm import sessionmaker
+from config import settings
 
-SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:Vish%402323@localhost/GreenConnect'
+# SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:Vish%402323@localhost/GreenConnect'
+
+SQLALCHEMY_DATABASE_URL = f'postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}'
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL) #here the create engine function is taking the address of database and linking these code and database
 
@@ -16,4 +19,4 @@ def get_db():
     try:
         yield db
     finally:
-        db.close()
+        db.close() 

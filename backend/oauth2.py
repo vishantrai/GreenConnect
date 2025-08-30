@@ -3,14 +3,19 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer #This endpoint needs a token, and that token must be sent in the Authorization header as a Bearer token.
 from datetime import datetime, timedelta
 import schemas
+from config import settings
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login') #here we will be giving a token which can be used by the user for autorization and identify the true user, tokenUrl is the URL where client can get the token
 
 #to create a token we need 3 things - secret_key, algorithm, expriation time, secret key is the most important part of authorization it should not be hardcoded like here(later we will make it env variable)
 
-SECRET_KEY = "23sdbv5wnebf767fbdhsbi89dnsbdhg634bbsdhf532bvg43b5v3g3"
-ALGORITHM = "HS256" #you can know more algo from google
-ACCESS_TOKEN_EXPIRE_MINUTES =30 #ek baar logged user kb tk logged rhega
+# SECRET_KEY = "23sdbv5wnebf767fbdhsbi89dnsbdhg634bbsdhf532bvg43b5v3g3"
+# ALGORITHM = "HS256" #you can know more algo from google
+# ACCESS_TOKEN_EXPIRE_MINUTES =30 #ek baar logged user kb tk logged rhega
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
+
 
 def create_access_token(data: dict): #this is a jwt token factory, each time client login a token is created
     to_encode = data.copy() #just making a copy of data
