@@ -3,4 +3,4 @@ __pycache__/
 *.pyd
 *$py.class
 .env
-gcenv
+gcenv/
