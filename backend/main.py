@@ -3,7 +3,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import models
 from database import Base, engine
-import user, posts, auth
+import routers.user as user, routers.posts as posts, routers.auth as auth, routers.like as like
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -21,3 +21,4 @@ while True:
 app.include_router(user.router)
 app.include_router(posts.router)
 app.include_router(auth.router)
+app.include_router(like.router)
