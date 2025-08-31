@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field, validator, model_validator
 from datetime import datetime
 from schemas import *
-from typing import Optional, Union
+from typing import Optional, Union, Literal
 import re #re lets you search, match, extract, and manipulate text
 
 #BaseModel-Hey Pydantic, here’s the kind of data I expect. Validate it, clean it, and throw hands if something's off.
@@ -226,3 +226,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id:Optional[int]
+
+class Like(BaseModel):
+    post_id: int
+    dir: Literal[0, 1]

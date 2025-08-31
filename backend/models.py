@@ -165,5 +165,13 @@ class CareRequests(Base):
     # relationship back to Post
     post = relationship("Post", back_populates="care_request_post")
 
+class Like(Base):
+    __tablename__ = "likes"
+
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), primary_key=True) 
+
+
+
 #notes
 #we cannot define more than one table in one class of the sqlalchemy so for each table create different class
