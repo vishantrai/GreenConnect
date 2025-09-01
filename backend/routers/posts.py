@@ -74,6 +74,8 @@ def create_post(post: schemas.PostCreate, db: Session = Depends(get_db), used_id
         db.commit()
         db.refresh(care_request_post)
 
+    
+
     return new_post
 
 

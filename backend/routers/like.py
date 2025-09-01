@@ -5,7 +5,7 @@ import schemas, database, models, oauth2
 
 router = APIRouter(
     prefix="/like",
-    tags=["LIKE"]
+    tags=["Like"]
 )
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -38,5 +38,6 @@ def like(like: schemas.Like, db: Session = Depends(database.get_db), current_use
 
 # notes
 # we want that when ever a post is fetched on the frontend the total number of likes on the post should be seen there 
-# join - join two tables
+# join - join two tables, there are many types of joins we need to look LEFT JOIN -- select * from posts LEFT JOIN users ON posts.owner_id = user.id; LEFT JOIN can show details which exists on the the left table and RIGHT JOIN can show details which exist on the right table
+
 
